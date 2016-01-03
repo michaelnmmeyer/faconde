@@ -144,7 +144,7 @@ _(nlevenshtein)
 _(ndamerau)
 #undef _
 
-#define FC_MEMO_MT "volubile.memo"
+#define FC_MEMO_MT "faconde.memo"
 
 struct fc_lua_memo {
    struct fc_memo memo;
