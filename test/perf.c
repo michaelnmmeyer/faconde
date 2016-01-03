@@ -59,27 +59,27 @@ struct token **read_tokens(FILE *fp, size_t *nrp)
 
 
 struct perf_case {
-	const char *name;
-	enum fc_metric metric;
+   const char *name;
+   enum fc_metric metric;
 
-	int (*vanilla)(const char32_t *, int, const char32_t *, int);
-	int (*memoized)(struct fc_memo *, const char32_t *, int);
-	int max_dist;
+   int (*vanilla)(const char32_t *, int, const char32_t *, int);
+   int (*memoized)(struct fc_memo *, const char32_t *, int);
+   int max_dist;
 
-	double vanilla_time;
-	double memoized_time;
+   double vanilla_time;
+   double memoized_time;
 };
 
 static struct perf_case perf_cases[] = {
-	{"levenshtein",            FC_LEVENSHTEIN, fc_levenshtein, fc_memo_levenshtein, INT32_MAX},
-	{"damerau",                FC_DAMERAU,     fc_damerau,     fc_memo_damerau,     INT32_MAX},
-	{"lcsubstr",               FC_LCSUBSTR,    fc_lcsubstr,    fc_memo_lcsubstr,    INT32_MAX},
-	{"lcsubseq",               FC_LCSUBSEQ,    fc_lcsubseq,    fc_memo_lcsubseq,    INT32_MAX},
-	{"levenshtein_max_dist=1", FC_LEVENSHTEIN, fc_levenshtein, fc_memo_levenshtein, 1        },
-	{"levenshtein_max_dist=2", FC_LEVENSHTEIN, fc_levenshtein, fc_memo_levenshtein, 2        },
-	{"damerau_max_dist=1",     FC_DAMERAU,     fc_damerau,     fc_memo_damerau,     1        },
-	{"damerau_max_dist=2",     FC_DAMERAU,     fc_damerau,     fc_memo_damerau,     2        },
-	{NULL,                     0,              0,              0,                   0        },
+   {"levenshtein",            FC_LEVENSHTEIN, fc_levenshtein, fc_memo_levenshtein, INT32_MAX},
+   {"damerau",                FC_DAMERAU,     fc_damerau,     fc_memo_damerau,     INT32_MAX},
+   {"lcsubstr",               FC_LCSUBSTR,    fc_lcsubstr,    fc_memo_lcsubstr,    INT32_MAX},
+   {"lcsubseq",               FC_LCSUBSEQ,    fc_lcsubseq,    fc_memo_lcsubseq,    INT32_MAX},
+   {"levenshtein_max_dist=1", FC_LEVENSHTEIN, fc_levenshtein, fc_memo_levenshtein, 1        },
+   {"levenshtein_max_dist=2", FC_LEVENSHTEIN, fc_levenshtein, fc_memo_levenshtein, 2        },
+   {"damerau_max_dist=1",     FC_DAMERAU,     fc_damerau,     fc_memo_damerau,     1        },
+   {"damerau_max_dist=2",     FC_DAMERAU,     fc_damerau,     fc_memo_damerau,     2        },
+   {NULL,                     0,              0,              0,                   0        },
 };
 
 #define ROUNDS_NR 1
@@ -88,25 +88,25 @@ static struct perf_case perf_cases[] = {
 static void run_vanilla(int (*f)(const char32_t *, int, const char32_t *, int),
                         struct token **ts, const char32_t *seq1, int len1)
 {
-	for (size_t n = 0; n < ROUNDS_NR; n++) {
-		for (size_t i = 0; ts[i]; i++) {
-		   char32_t seq2[MAX_LINE];
-			int len2 = fc_utf8_decode(seq2, ts[i]->str, ts[i]->len);
-			f(seq1, len1, seq2, len2);
-		}
-	}
+   for (size_t n = 0; n < ROUNDS_NR; n++) {
+      for (size_t i = 0; ts[i]; i++) {
+         char32_t seq2[MAX_LINE];
+         int len2 = fc_utf8_decode(seq2, ts[i]->str, ts[i]->len);
+         f(seq1, len1, seq2, len2);
+      }
+   }
 }
 
 static void run_memoized(int (*f)(struct fc_memo *, const char32_t *, int),
                          struct token **ts, struct fc_memo *m)
 {
-	for (size_t n = 0; n < ROUNDS_NR; n++) {
-		for (size_t i = 0; ts[i]; i++) {
-		   char32_t seq2[MAX_LINE];
-			int len2 = fc_utf8_decode(seq2, ts[i]->str, ts[i]->len);
-			f(m, seq2, len2);
-		}
-	}
+   for (size_t n = 0; n < ROUNDS_NR; n++) {
+      for (size_t i = 0; ts[i]; i++) {
+         char32_t seq2[MAX_LINE];
+         int len2 = fc_utf8_decode(seq2, ts[i]->str, ts[i]->len);
+         f(m, seq2, len2);
+      }
+   }
 }
 
 static void run_perf_case(struct perf_case *pc, struct token **ts,
@@ -133,19 +133,19 @@ static void run_perf_case(struct perf_case *pc, struct token **ts,
 
 int main(void)
 {
-	size_t nr;
-	struct token **ts = read_tokens(stdin, &nr);
+   size_t nr;
+   struct token **ts = read_tokens(stdin, &nr);
 
-	srand(time(NULL));
+   srand(time(NULL));
 
-	for (size_t n = 0; n < TOKENS_NR; n++) {
-	   size_t t = rand() % nr;
+   for (size_t n = 0; n < TOKENS_NR; n++) {
+      size_t t = rand() % nr;
       char32_t seq1[MAX_LINE];
-	   int len1 = fc_utf8_decode(seq1, ts[t]->str, ts[t]->len);
-	   for (struct perf_case *pc = perf_cases; pc->name; pc++)
-	      run_perf_case(pc, ts, seq1, len1);
-	}
+      int len1 = fc_utf8_decode(seq1, ts[t]->str, ts[t]->len);
+      for (struct perf_case *pc = perf_cases; pc->name; pc++)
+         run_perf_case(pc, ts, seq1, len1);
+   }
 
-	for (struct perf_case *pc = perf_cases; pc->name; pc++)
-	   printf("%22s %.02f\n", pc->name, pc->vanilla_time / pc->memoized_time);
+   for (struct perf_case *pc = perf_cases; pc->name; pc++)
+      printf("%22s %.02f\n", pc->name, pc->vanilla_time / pc->memoized_time);
 }
