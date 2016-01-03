@@ -4,162 +4,162 @@ local tests = {}
 
 function tests.levenshtein()
    local cases = {
-		"", "", "0",
-		"", "a", "1",
-		"a", "", "1",
-		"a", "a", "0",
-		"", "ab", "2",
-		"ab", "", "2",
-		"ab", "a", "1",
-		"ab", "b", "1",
-		"a", "ab", "1",
-		"b", "ab", "1",
-		"ab", "ab", "0",
-		"ab", "aab", "1",
-		"ab", "b", "1",
-		"ab", "ac", "1",
-		"abc", "adb", "2",
-		"aé", "é", "1",
-	}
-	for i = 1, #cases, 3 do
-	   local ret = tonumber(cases[i + 2])
-	   assert(faconde.levenshtein(cases[i], cases[i + 1]) == ret)
-	   assert(faconde.levenshtein(cases[i + 1], cases[i]) == ret)
-	end
+      "", "", "0",
+      "", "a", "1",
+      "a", "", "1",
+      "a", "a", "0",
+      "", "ab", "2",
+      "ab", "", "2",
+      "ab", "a", "1",
+      "ab", "b", "1",
+      "a", "ab", "1",
+      "b", "ab", "1",
+      "ab", "ab", "0",
+      "ab", "aab", "1",
+      "ab", "b", "1",
+      "ab", "ac", "1",
+      "abc", "adb", "2",
+      "aé", "é", "1",
+   }
+   for i = 1, #cases, 3 do
+      local ret = tonumber(cases[i + 2])
+      assert(faconde.levenshtein(cases[i], cases[i + 1]) == ret)
+      assert(faconde.levenshtein(cases[i + 1], cases[i]) == ret)
+   end
 end
 
 function tests.nlevenshtein()
    local cases = {
-		"s", "", "", "0.0",
-		"s", "a", "", "1.0",
-		"s", "", "a", "1.0",
-		"s","ab", "ab", "0.0",
-		"s", "ab", "aab", "0.33333333333333333333333333333333333333333333333333333333333",
-		"s", "ab", "b", "0.5",
-		"s", "ab", "ac", "0.5",
-		"s", "abc", "adb", "0.6666666666666666666666666666666666666666666666666666666666",
-		"c", "abc", "adb", "0.5",
-	}
-	local modes = {s = "lseq", c = "lalign"}
+      "s", "", "", "0.0",
+      "s", "a", "", "1.0",
+      "s", "", "a", "1.0",
+      "s","ab", "ab", "0.0",
+      "s", "ab", "aab", "0.33333333333333333333333333333333333333333333333333333333333",
+      "s", "ab", "b", "0.5",
+      "s", "ab", "ac", "0.5",
+      "s", "abc", "adb", "0.6666666666666666666666666666666666666666666666666666666666",
+      "c", "abc", "adb", "0.5",
+   }
+   local modes = {s = "lseq", c = "lalign"}
 
-	for i = 1, #cases, 4 do
-	   local mode = assert(modes[cases[i]])
-	   local ret = tonumber(cases[i + 3])
-	   assert(faconde.nlevenshtein(cases[i + 1], cases[i + 2], mode) == ret)
-	   assert(faconde.nlevenshtein(cases[i + 2], cases[i + 1], mode) == ret)
-	end
+   for i = 1, #cases, 4 do
+      local mode = assert(modes[cases[i]])
+      local ret = tonumber(cases[i + 3])
+      assert(faconde.nlevenshtein(cases[i + 1], cases[i + 2], mode) == ret)
+      assert(faconde.nlevenshtein(cases[i + 2], cases[i + 1], mode) == ret)
+   end
 end
 
 function tests.ndamerau()
    local cases = {
-		"s", "", "", "0.0",
-		"s", "a", "", "1.0",
-		"s", "", "a", "1.0",
-		"s", "ab", "ab", "0.0",
-		"s", "ab", "aab", "0.33333333333333333333333333333333333333333333333333333333333",
-		"s", "ab", "b", "0.5",
-		"s", "ab", "ac", "0.5",
-		"s", "abc", "adb", "0.6666666666666666666666666666666666666666666666666666666666",
-		"c", "abc", "adb", "0.5",
-		"s", "aé", "é", "0.5",
-		"s", "aé", "éa", "0.5",
-		"s", "abé", "aéb", "0.333333333333333333333333333333333333333333333333333333333333",
-		"s", "abéc", "aébc", "0.25",
-	}
-	local modes = {s = "lseq", c = "lalign"}
+      "s", "", "", "0.0",
+      "s", "a", "", "1.0",
+      "s", "", "a", "1.0",
+      "s", "ab", "ab", "0.0",
+      "s", "ab", "aab", "0.33333333333333333333333333333333333333333333333333333333333",
+      "s", "ab", "b", "0.5",
+      "s", "ab", "ac", "0.5",
+      "s", "abc", "adb", "0.6666666666666666666666666666666666666666666666666666666666",
+      "c", "abc", "adb", "0.5",
+      "s", "aé", "é", "0.5",
+      "s", "aé", "éa", "0.5",
+      "s", "abé", "aéb", "0.333333333333333333333333333333333333333333333333333333333333",
+      "s", "abéc", "aébc", "0.25",
+   }
+   local modes = {s = "lseq", c = "lalign"}
 
-	for i = 1, #cases, 4 do
-	   local mode = assert(modes[cases[i]])
-	   local ret = tonumber(cases[i + 3])
-	   assert(faconde.ndamerau(cases[i + 1], cases[i + 2], mode) == ret)
-	   assert(faconde.ndamerau(cases[i + 2], cases[i + 1], mode) == ret)
-	end
+   for i = 1, #cases, 4 do
+      local mode = assert(modes[cases[i]])
+      local ret = tonumber(cases[i + 3])
+      assert(faconde.ndamerau(cases[i + 1], cases[i + 2], mode) == ret)
+      assert(faconde.ndamerau(cases[i + 2], cases[i + 1], mode) == ret)
+   end
 end
 
 function tests.damerau()
    local cases = {
-   		"", "", "0",
-		"", "a", "1",
-		"a", "", "1",
-		"a", "a", "0",
-		"", "ab", "2",
-		"ab", "", "2",
-		"ab", "a", "1",
-		"ab", "b", "1",
-		"a", "ab", "1",
-		"b", "ab", "1",
-		"ab", "ab", "0",
-		"ab", "aab", "1",
-		"ab", "b", "1",
-		"ab", "ac", "1",
-		"abc", "adb", "2",
-		"aé", "é", "1",
-		"ab", "ba", "1",
-		"dbc", "acb", "2",
-		"déc", "acé", "2",
-		"décb", "acé8", "3",
-	}
-	for i = 1, #cases, 3 do
-	   local ret = tonumber(cases[i + 2])
-	   assert(faconde.damerau(cases[i], cases[i + 1]) == ret)
-	   assert(faconde.damerau(cases[i + 1], cases[i]) == ret)
-	end
+         "", "", "0",
+      "", "a", "1",
+      "a", "", "1",
+      "a", "a", "0",
+      "", "ab", "2",
+      "ab", "", "2",
+      "ab", "a", "1",
+      "ab", "b", "1",
+      "a", "ab", "1",
+      "b", "ab", "1",
+      "ab", "ab", "0",
+      "ab", "aab", "1",
+      "ab", "b", "1",
+      "ab", "ac", "1",
+      "abc", "adb", "2",
+      "aé", "é", "1",
+      "ab", "ba", "1",
+      "dbc", "acb", "2",
+      "déc", "acé", "2",
+      "décb", "acé8", "3",
+   }
+   for i = 1, #cases, 3 do
+      local ret = tonumber(cases[i + 2])
+      assert(faconde.damerau(cases[i], cases[i + 1]) == ret)
+      assert(faconde.damerau(cases[i + 1], cases[i]) == ret)
+   end
 end
 
 function tests.lcsubstr()
    local cases = {
-   		"", "", "0",
-		"a", "", "0",
-		"a", "a", "1",
-		"ab", "ac", "1",
-		"ba", "ca", "1",
-		"ab", "bd", "1",
-		"abcd", "adbc", "2",
-		"foo", "foo", "3",
-		"foobar", "foo", "3",
-		"barfoo", "foo", "3",
-		"barfoobar", "foo", "3",
-		"abab", "baba", "3",
-		"repletes", "Aaron", "1",
-	}
-	for i = 1, #cases, 3 do
-	   local ret = tonumber(cases[i + 2])
-	   assert(faconde.lcsubstr(cases[i], cases[i + 1]) == ret)
-	   assert(faconde.lcsubstr(cases[i + 1], cases[i]) == ret)
-	end
+         "", "", "0",
+      "a", "", "0",
+      "a", "a", "1",
+      "ab", "ac", "1",
+      "ba", "ca", "1",
+      "ab", "bd", "1",
+      "abcd", "adbc", "2",
+      "foo", "foo", "3",
+      "foobar", "foo", "3",
+      "barfoo", "foo", "3",
+      "barfoobar", "foo", "3",
+      "abab", "baba", "3",
+      "repletes", "Aaron", "1",
+   }
+   for i = 1, #cases, 3 do
+      local ret = tonumber(cases[i + 2])
+      assert(faconde.lcsubstr(cases[i], cases[i + 1]) == ret)
+      assert(faconde.lcsubstr(cases[i + 1], cases[i]) == ret)
+   end
 end
 
 function tests.lcsubseq()
    local cases = {
-		"", "", "0",
-		"a", "", "0",
-		"a", "a", "1",
-		"abc", "abc", "3",
-		"abc", "adc", "2",
-		"abc", "dbf", "1",
-		"abc", "def", "0",
-		"acab", "ab", "2",
-		"acab", "aab", "3",
-	}
-	for i = 1, #cases, 3 do
-	   local ret = tonumber(cases[i + 2])
-	   assert(faconde.lcsubseq(cases[i], cases[i + 1]) == ret)
-	   assert(faconde.lcsubseq(cases[i + 1], cases[i]) == ret)
-	end
+      "", "", "0",
+      "a", "", "0",
+      "a", "a", "1",
+      "abc", "abc", "3",
+      "abc", "adc", "2",
+      "abc", "dbf", "1",
+      "abc", "def", "0",
+      "acab", "ab", "2",
+      "acab", "aab", "3",
+   }
+   for i = 1, #cases, 3 do
+      local ret = tonumber(cases[i + 2])
+      assert(faconde.lcsubseq(cases[i], cases[i + 1]) == ret)
+      assert(faconde.lcsubseq(cases[i + 1], cases[i]) == ret)
+   end
 end
 
 function tests.nlcsubseq()
    local cases = {
-		"", "foo", "1.0",
-		"foo", "", "1.0",
-		"foo", "foo", "0.0",
-		"foo", "frob", "0.4285714285714286",
-	}
-	for i = 1, #cases, 3 do
-	   local ret = tonumber(cases[i + 2])
-	   assert(faconde.nlcsubseq(cases[i], cases[i + 1]) == ret)
-	   assert(faconde.nlcsubseq(cases[i + 1], cases[i]) == ret)
-	end
+      "", "foo", "1.0",
+      "foo", "", "1.0",
+      "foo", "foo", "0.0",
+      "foo", "frob", "0.4285714285714286",
+   }
+   for i = 1, #cases, 3 do
+      local ret = tonumber(cases[i + 2])
+      assert(faconde.nlcsubseq(cases[i], cases[i + 1]) == ret)
+      assert(faconde.nlcsubseq(cases[i + 1], cases[i]) == ret)
+   end
 end
 
 function tests.lcsubstr_extract()
@@ -187,12 +187,12 @@ function tests.lev_bounded()
    local INF = 3333333
    local cases = {
    [0] = {
-	   "", "", 0,
-	   "a", "a", 0,
-	   "a", "b", INF,
-	   "b", "a", INF,
-	 },
-	 [1] = {
+      "", "", 0,
+      "a", "a", 0,
+      "a", "b", INF,
+      "b", "a", INF,
+    },
+    [1] = {
       "", "", 0,
       "", "a", 1,
       "a", "a", 0,
@@ -203,8 +203,8 @@ function tests.lev_bounded()
       "abcd", "abce", 1,
       "abcd", "acbd", INF,
       "abcd", "dcba", INF,
-	 },
-	 [2] = {
+    },
+    [2] = {
       "", "", 0,
       "", "a", 1,
       "", "ab", 2,
@@ -222,17 +222,17 @@ function tests.lev_bounded()
       "a", "abcd", INF,
       "abcd", "dcba", INF,
    },
-	}
-	for i, cases_i in ipairs(cases) do
-	   for j = 1, #cases_i, 3 do
-	      local ret = faconde.lev_bounded(cases_i[j], cases_i[j + 1])
-	      if cases_i[j + 2] == INF then
-	         assert(ret > i)
+   }
+   for i, cases_i in ipairs(cases) do
+      for j = 1, #cases_i, 3 do
+         local ret = faconde.lev_bounded(cases_i[j], cases_i[j + 1])
+         if cases_i[j + 2] == INF then
+            assert(ret > i)
          else
             assert(ret == cases_i[j + 2])
          end
-	   end
-	end
+      end
+   end
 end
 
 function tests.jaro()
@@ -317,20 +317,20 @@ function tests.memo()
             memo:set_ref(ref_word)
          end
       ::compute::
-		   local dist = memo:compute(word)
-		   -- Levenshtein or Damerau.
+         local dist = memo:compute(word)
+         -- Levenshtein or Damerau.
          if name == "levenshtein" or name == "damerau" then
             local dist2 = faconde[name](ref_word, word)
             assert(dist2 <= max_dist and dist == dist2 or dist >= dist2)
-		   -- Lcsubstr, lcsubseq.
-		   else
-		      assert(dist == faconde[name](ref_word, word))
-		   end
-		   -- Should work fine when a candidate sequence is compared with the
-		   -- reference sequence more than one time consecutively.
-		   if math.random(33) == 3 then
-		     goto compute
-		   end
+         -- Lcsubstr, lcsubseq.
+         else
+            assert(dist == faconde[name](ref_word, word))
+         end
+         -- Should work fine when a candidate sequence is compared with the
+         -- reference sequence more than one time consecutively.
+         if math.random(33) == 3 then
+           goto compute
+         end
       end
    end
 end
