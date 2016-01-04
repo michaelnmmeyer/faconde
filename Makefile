@@ -31,8 +31,5 @@ faconde.c: $(wildcard src/*.c) $(wildcard src/*.h)
 lua/faconde.so: lua/faconde.c $(AMALG)
 	$(MAKE) -C lua
 
-example: example.c $(AMALG)
-	$(CC) $(CFLAGS) $< faconde.c -o $@
-
-test/perf: test/perf.c $(AMALG)
+%: %.c $(AMALG)
 	$(CC) $(CFLAGS) $< faconde.c -o $@

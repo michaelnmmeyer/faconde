@@ -25,6 +25,10 @@ Unix. Then, typically:
 
     $ cc -std=c11 -c faconde.c -o faconde.o
 
+A Lua binding is available. See the readme file in the `lua` directory for
+instructions about how to build it.
+
+
 ## Details
 
 ### Standard algorithms
