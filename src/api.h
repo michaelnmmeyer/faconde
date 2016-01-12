@@ -1,6 +1,8 @@
 #ifndef FACONDE_H
 #define FACONDE_H
 
+#define FC_VERSION "0.1"
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <uchar.h>
