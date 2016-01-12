@@ -40,3 +40,6 @@ vgcore*
 
 # Private
 TODO
+
+test/perf
+example
