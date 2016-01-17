@@ -1,4 +1,4 @@
-CFLAGS = -std=c11 -g -Wall -Werror
+CFLAGS = -std=c11 -g -Wall -Werror -Wno-unused-function
 CFLAGS += -O2 -DNDEBUG -march=native -mtune=native -fomit-frame-pointer -s
 
 AMALG = faconde.h faconde.c
