@@ -691,8 +691,10 @@ int32_t fc_lev_bounded1(const char32_t *seq1, int32_t len1,
    return len1;
 }
 
-/* C adaptation of:
+/* This is a C adaptation of:
  * http://writingarchives.sakura.ne.jp/fastcomp/#algorithm
+ * See the LICENSE file for credits.
+ *
  * This is both efficient and cheap in implementation complexity.
  * i, d, r -> insert, delete, replace.
  */

@@ -1,3 +1,5 @@
+/* Shows how to use the memoized string metrics interface. */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>

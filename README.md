@@ -1,6 +1,6 @@
 # faconde
 
-Efficient fuzzy matching
+Efficient fuzzy matching.
 
 ## Purpose
 
