@@ -717,6 +717,8 @@ void fc_memo_init(struct fc_memo *ctx, enum fc_metric metric, int32_t max_len,
       fc_fatal("invalid metric: %d", metric);
    }
    }
+   
+   (void)fc_memo_compute;
 }
 
 enum fc_metric fc_memo_metric(const struct fc_memo *ctx)

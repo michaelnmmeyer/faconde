@@ -40,7 +40,7 @@ bool fc_glob(const char32_t *pat, const char32_t *str);
  ******************************************************************************/
 
 /* Normalization strategies for Levenshtein and Damerau.
- * FC_NORM_LSEQ   Normalize by the length of longest sequence.
+ * FC_NORM_LSEQ   Normalize by the length of the longest sequence.
  * FC_NORM_LALIGN Normalize by the longest alignement between the two input
  *                sequences. This is more expensive (both in terms of space and
  *                time) than FC_NORM_LSEQ, but (arguably) more accurate. For

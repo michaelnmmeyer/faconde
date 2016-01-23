@@ -40,7 +40,7 @@ bool fc_glob(const char32_t *pat, const char32_t *str);
  ******************************************************************************/
 
 /* Normalization strategies for Levenshtein and Damerau.
- * FC_NORM_LSEQ   Normalize by the length longest sequence.
+ * FC_NORM_LSEQ   Normalize by the length of the longest sequence.
  * FC_NORM_LALIGN Normalize by the longest alignement between the two input
  *                sequences. This is more expensive (both in terms of space and
  *                time) than FC_NORM_LSEQ, but (arguably) more accurate. For
@@ -61,11 +61,11 @@ double fc_nlevenshtein(enum fc_norm_method method,
                        const char32_t *seq1, int32_t len1,
                        const char32_t *seq2, int32_t len2);
 
-/* Computes the absolute Damerau distance between two sequences. */
+/* Computes the absolute Damerau-Levenshtein distance between two sequences. */
 int32_t fc_damerau(const char32_t *seq1, int32_t len1,
                    const char32_t *seq2, int32_t len2);
 
-/* Computes a normalized Damerau distance between two sequences. */
+/* Computes a normalized Damerau-Levenshtein distance between two sequences. */
 double fc_ndamerau(enum fc_norm_method method,
                    const char32_t *seq1, int32_t len1,
                    const char32_t *seq2, int32_t len2);
@@ -87,7 +87,7 @@ int32_t fc_lev_bounded2(const char32_t *seq1, int32_t len1,
 extern int32_t (*const fc_lev_bounded[3])(const char32_t *, int32_t,
                                           const char32_t *, int32_t);
 
-/* Computes the jaro distance between two sequences.
+/* Computes the Jaro distance between two sequences.
  * Contrary to the canonical implementation, this returns 0 for identity, and
  * 1 to indicate absolute difference, instead of the reverse.
  */
@@ -150,7 +150,8 @@ struct fc_memo {
 /* Initializer.
  * metric: the metric to use.
  * max_len: the maximum possible length of a sequence (or higher). The
- * internal matrix is never reallocated.
+ * internal matrix is never reallocated. Random memory corruptions can occur if
+ * a sequence longer than this is used later on.
  * max_dist: the maximum allowed edit distance (the lower, the faster). This
  * parameter is only used if the chosen metric is Levenshtein or Damerau.
  */
@@ -164,10 +165,10 @@ void fc_memo_fini(struct fc_memo *);
 enum fc_metric fc_memo_metric(const struct fc_memo *);
 
 /* Sets the reference sequence.
- * It is not copied internally, and should then be available until either a new
- * reference sequence is set, or this object is deinitialized. The reference
- * sequence can be changed several times without deinitializing this object
- * first.
+ * It is not copied internally, and should then not be deallocated until either
+ * a new reference sequence is set, or this object is deinitialized. The
+ * reference sequence can be changed several times without deinitializing this
+ * object first.
  */
 void fc_memo_set_ref(struct fc_memo *, const char32_t *seq1, int32_t len1);
 
@@ -179,7 +180,7 @@ static inline int32_t fc_memo_compute(struct fc_memo *m,
 }
 
 /* Concrete prototypes for the memoized string metrics functions.
- * The function called must match the chosen metric.
+ * The function called must match the chosen metric, or bad things will happen.
  */
 int32_t fc_memo_levenshtein(struct fc_memo *, const char32_t *, int32_t);
 int32_t fc_memo_damerau(struct fc_memo *, const char32_t *, int32_t);
